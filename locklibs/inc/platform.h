@@ -1,4 +1,4 @@
-/** @brief		数据类型定义及一些常用的宏
+/** @brief		数据类型定义及一些常用的宏，平台相关的接口等
  *	@file			common.h
  *	@author		au
  *	@version	1.0
@@ -7,12 +7,17 @@
  *	@sinc			-
  *
  */
-#ifndef __COMMON_H_
-#define __COMMON_H_
-#endif
+#ifndef __PLATFORM_H_
+#define __PLATFORM_H_
+
 #ifdef __cplusplus
-    extern "C" {
+	extern "C" {
 #endif
+
+
+#define PLATFORM_LINUX 1
+#define PLATFORM_STM32 0
+
 
 
 /**< common used types */
@@ -25,12 +30,14 @@
 #define _F32	float
 #define _BOOL	unsigned char
 
+
+/**< Const Define */
 #define _TRUE		1
 #define _FALSE	0
 
 
-#define PLATFORM_LINUX 1
-#define PLATFORM_STM32 0
+#define _NULL		0
+
 
 
 /**< STM32 INTERFACE ======================================================================================*/
@@ -44,20 +51,48 @@
 #define _LED_TG(port, pin)		do { HAL_GPIO_WritePin(port,	pin, !HAL_GPIO_ReadPin(port, pin)); } while (0)
 
 /**< schedule interface */
-#define _TIMER_CURRENT()
-#define _TIMER_SCHEDULE(func, delt) do { \
-	static  TimerHandle_t *t = NULL; \
-	if (t == NULL) { \
-		t = xTimerCreate("schedule timer", delt,  pdFALSE, &t, func); \
-	} else { \
-		xTimerChangePeriod(t, delt, portMAX_DELAY); \
-	} \
-} while (0)
 
-#endif
+/** _TIMER_CURRENT
+ *  
+ * 获取当前系统时钟,单位ms
+ * 
+ * @param none
+ * 
+ * @return none
+ * 
+ * @warning none
+ * 
+ * @note none
+ *
+ * @see none
+ */
+_U32 _TIMER_CURRENT();
+
+/** _TIMER_SCHEDULE 
+ * 
+ * 开启调度, delt Ms 后回调 func
+ * 
+ * @param[in] func 回调函数
+ * @param[in] delt 回调时间, 单位ms
+ * 
+ * @return none
+ * 
+ * @warning none
+ * 
+ * @note none
+ *
+ * @see none
+ */
+void _TIMER_SCHEDULE(void *func, _U32 delt);
+
+
 
 /**< LINUX INTERFACE ======================================================================================*/
-#if PLATFORM_LINUX
+#elif PLATFORM_LINUX
+
+#include "time.h"
+#include "timer.h"
+#include "log.h"
 
 #define _PRINTF printf
 
@@ -66,19 +101,45 @@
 #define _LED_TG(port, pin)		do { printf("LED_TG: P%d_%d\n", prot, pin);} while (0)
 
 /**< schedule interface */
-#define _TIMER_CURRENT()
-#define _TIMER_SCHEDULE(func, delt) do { \
-	static  TimerHandle_t *t = NULL; \
-	if (t == NULL) { \
-		t = xTimerCreate("schedule timer", delt,  pdFALSE, &t, func); \
-	} else { \
-		xTimerChangePeriod(t, delt, portMAX_DELAY); \
-	} \
-} while (0)
+
+/** _TIMER_CURRENT
+ *  
+ * 获取当前系统时钟,单位ms
+ * 
+ * @param none
+ * 
+ * @return none
+ * 
+ * @warning none
+ * 
+ * @note none
+ *
+ * @see none
+ */
+_U32 _TIMER_CURRENT();
+
+/** _TIMER_SCHEDULE 
+ * 
+ * 开启调度, delt Ms 后回调 func
+ * 
+ * @param[in] func 回调函数
+ * @param[in] delt 回调时间, 单位ms
+ * 
+ * @return none
+ * 
+ * @warning none
+ * 
+ * @note none
+ *
+ * @see none
+ */
+void _TIMER_SCHEDULE(void *func, _U32 delt);
 
 #endif
+
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

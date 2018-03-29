@@ -36,9 +36,9 @@ MKDIR		:= mkdir -p
 
 CFLAGS							:= -Wall -g -O2 -I$(ROOTDIR)/libs/osi/include  -I$(ROOTDIR)/libs/other/include 
 CFLAGS							+= -I$(ROOTDIR)/libs/third/json/include -DHAVE_CONFIG_H -DHAVE_STDINT_H
-CFLAGS							+= -I$(ROOTDIR)/libs/third/libhttpd/include
+CFLAGS							+= -I$(ROOTDIR)/libs/third/libhttpd/include -I$(ROOTDIR)/locklibs/inc
 CFLAGS							+= -fPIC
-CFLAGS							+= -fpermissive
+#CFLAGS							+= -fpermissive
 CXXFLAGS						:= -std=c++0x 
 CXXFLAGS						+= $(CFLAGS)
 TARGET_CFLAGS				+= $(CROSS_CFLAGS) 

@@ -53,10 +53,14 @@ srcs				+= $(ROOTDIR)/libs/third/libhttpd/src/version.c
 srcs				+= $(ROOTDIR)/libs/third/libhttpd/src/ember.c
 srcs				+= $(ROOTDIR)/libs/third/libhttpd/src/protocol.c
 
+
+srcs				+= $(ROOTDIR)/locklibs/src/led.c
+srcs				+= $(ROOTDIR)/locklibs/src/schedule.c
+srcs				+= $(ROOTDIR)/locklibs/src/platform.c
+
 srcs				+= $(ROOTDIR)/src/test.c
 
 srcs	      := $(subst .cpp,.c,$(srcs))
-
 
 testsrcs		+= $(ROOTDIR)/main.c
 testsrcs		+= $(srcs)

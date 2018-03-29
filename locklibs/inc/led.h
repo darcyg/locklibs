@@ -9,9 +9,9 @@
  */
 #ifndef __LED_H_
 #define __LED_H_
-#endif
 
-#include <common.h>
+#include "platform.h"
+#include "schedule.h"
 
 #ifdef __cplusplus
     extern "C" {

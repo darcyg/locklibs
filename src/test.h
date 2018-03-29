@@ -29,12 +29,6 @@ int		test_push(stEvent_t *e);
 void	test_run(struct timer *timer);
 void	test_in(void *arg, int fd);
 
-
-int proto_make_frame(char *cmd, char *buf);
-void test_do_cmd(char *load, char *cliip, int cliport);
-char proto_check_sum(char *buffer, int len);
-void test_send_frame(int fd, char *load, char *ip, int port);
-
 #ifdef __cplusplus
 }
 #endif

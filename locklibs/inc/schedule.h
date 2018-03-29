@@ -3,19 +3,18 @@
  *	@author		au
  *	@version	1.0
  *	@date			2018/3/29
- *	@note     -
+ *	@note     被模块不对外开放,不作注释.
  *	@sinc			-
  *
  */
 
 #ifndef __SCHEDULE_H_
 #define __SCHEDULE_H_
-#endif
 
-#include <common.h>
+#include <platform.h>
 
 #ifdef __cplusplus
-    extern "C" {
+	extern "C" {
 #endif
 
 /**< schedule interface */
@@ -24,13 +23,12 @@ typedef struct stScheduleTask {
 	void				*arg;
 	_U32				start;
 	_U32				delt;
-	struct stScheduleTask *next
+	struct stScheduleTask *next;
 }stScheduleTask_t;
 
-
-void schedule_add();
-void schedule_del();
-void schedule_current();
+void schedule_add(stScheduleTask_t *at, _U32 ms, void *func, void *arg);
+void schedule_del(stScheduleTask_t *at);
+_BOOL schedule_empty();
 
 
 #ifdef __cplusplus

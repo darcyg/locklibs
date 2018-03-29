@@ -1,11 +1,11 @@
-#include "schedue.h"
+#include "schedule.h"
 
-static stScheduleTask_t * task_list = NULL;
+static stScheduleTask_t * task_list = _NULL;
 
-static stScheduleTask_t * schedue_search(stScheduleTask_t * at) {
+static stScheduleTask_t * schedule_search(stScheduleTask_t * at) {
 	stScheduleTask_t *curr = task_list;
 	
-	while (curr != NULL) {
+	while (curr != _NULL) {
 		if (curr == at) {
 			break;
 		}
@@ -15,30 +15,30 @@ static stScheduleTask_t * schedue_search(stScheduleTask_t * at) {
 	return curr;
 }
 
-static stScheduleTask_t * _schedue_add(stScheduleTask_t *at) {
+static stScheduleTask_t * _schedule_add(stScheduleTask_t *at) {
 	stScheduleTask_t *prev = task_list;
 	
-	while (prev != NULL && prev->next != NULL) {
+	while (prev != _NULL && prev->next != _NULL) {
 		prev = prev->next;
 	}
 
-	if (prev == NULL) {
+	if (prev == _NULL) {
 		task_list = at;
 	} else {
 		prev->next = at;
 	}
 
-	at->next = NULL;
+	at->next = _NULL;
 
 	return at;
 }
 
-static stScheduleTask_t *schedue_first_task_to_exec() {
+static stScheduleTask_t *schedule_first_task_to_exec() {
 	stScheduleTask_t *curr = task_list;
 	stScheduleTask_t *min  = curr;
 
 	
-	while (curr != NULL) {
+	while (curr != _NULL) {
 		if (curr->start + curr->delt <= min->start + min->delt) {
 			min = curr;
 		}
@@ -48,65 +48,66 @@ static stScheduleTask_t *schedue_first_task_to_exec() {
 	return min;
 }
 
-static _I32 schedue_first_task_delay() {
-	stScheduleTask_t *min = schedue_first_task_to_exec();
-	if (min == NULL) {
+static _U32 schedule_current() {
+	return _TIMER_CURRENT();
+}
+
+static _I32 schedule_first_task_delay() {
+	stScheduleTask_t *min = schedule_first_task_to_exec();
+	if (min == _NULL) {
 		return -1;
 	}
-	_U32 ret = min->start + min->delt - schedue_current();
+	_I32 ret = min->start + min->delt - schedule_current();
 
 	if (ret < 0) {
 		ret = 0; //10ms
 	}
-	
+
 	return ret;
 }
 
-static _U32 schedue_current() {
-	return _TIMER_CURRENT();
-}
 
-static void schedue_execute() {
-	_I32 delt = schedue_first_task_delay();
+static void schedule_execute() {
+	_I32 delt = schedule_first_task_delay();
 	if (delt < 0) {
 		return;
 	}
 
 	if (delt == 0) {
-		stScheduleTask_t *t = schedue_first_task_to_exec();
-		schedue_del(task);
+		stScheduleTask_t *t = schedule_first_task_to_exec();
+		schedule_del(t);
 
-		t->func(t->arg);
+		((void (*)(void*))t->func)(t->arg);
 	}
 
-	delt = schedue_first_task_delay();
+	delt = schedule_first_task_delay();
 	if (delt < 0) {
 		return;
 	}
 
-	_TIMER_SCHEDULE(schedue_execute, delt);
+	_TIMER_SCHEDULE(schedule_execute, delt);
 }
 
 ////////////////////////////////////////////////////////////////////////
-void schedue_add(stScheduleTask_t *at, _U32 ms, void *func, void *arg) {
+void schedule_add(stScheduleTask_t *at, _U32 ms, void *func, void *arg) {
 	
-	if (schedue_search(at) == NULL) {
-		_schedue_add(at);
+	if (schedule_search(at) == _NULL) {
+		_schedule_add(at);
 	}
 
 	at->func = func;
 	at->arg = arg;
-	at->start = schedue_current();
+	at->start = schedule_current();
 	at->delt = ms;
 
-	schedue_execute();
+	schedule_execute();
 }
 
-void schedue_del(stScheduleTask_t *at) {
-	stScheduleTask_t *prev = NULL;
+void schedule_del(stScheduleTask_t *at) {
+	stScheduleTask_t *prev = _NULL;
 	stScheduleTask_t *curr = task_list;
 
-	while (curr != NULL) {
+	while (curr != _NULL) {
 		if (curr == at) {
 			break;
 		}
@@ -115,8 +116,8 @@ void schedue_del(stScheduleTask_t *at) {
 		curr = curr->next;
 	}
 
-	if (curr == at && curr != NULL) {
-		if (prev == NULL) {
+	if (curr == at && curr != _NULL) {
+		if (prev == _NULL) {
 			task_list = curr->next;
 		} else {
 			prev->next = curr->next;
@@ -124,4 +125,7 @@ void schedue_del(stScheduleTask_t *at) {
 	}
 }
 
+_BOOL schedule_empty() {
+	return (task_list == _NULL);
+}
 
