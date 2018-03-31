@@ -1,5 +1,5 @@
 /** @brief		LED 操作函数接口
- *	@file			led.h
+ *	@file			ledx.h
  *	@author		au
  *	@version	1.0
  *	@date			2018/3/29
@@ -7,8 +7,8 @@
  *	@sinc			-
  *
  */
-#ifndef __LED_H_
-#define __LED_H_
+#ifndef __LEDX_H_
+#define __LEDX_H_
 
 #include "platform.h"
 #include "schedule.h"

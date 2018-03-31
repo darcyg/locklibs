@@ -13,10 +13,10 @@
 #ifdef __cplusplus
 	extern "C" {
 #endif
+          
 
-
-#define PLATFORM_LINUX 1
-#define PLATFORM_STM32 0
+#define PLATFORM_LINUX 0
+#define PLATFORM_STM32 1
 
 
 
@@ -40,15 +40,18 @@
 
 
 
-/**< STM32 INTERFACE ======================================================================================*/
-#if PLATFORM_STM32
-
 #define _PRINTF
 
+/**< gpio controller interface */
+void _GPIO_CONFIG(_U8 port, _U8 pin, _U8 mode, _U8 pull, _U8 speed);
+void _GPIO_HIGH(_U8 port, _U8 pin);
+void _GPIO_LOW(_U8 port, _U8 pin);
+
 /**< led controller interface */
-#define _LED_ON(port, pin)		do { HAL_GPIO_WritePin(port, pin, GPIO_PIN_SET); } while (0)
-#define _LED_OF(port, pin)		do { HAL_GPIO_WritePin(port, pin, GPIO_PIN_RESET);} while (0)
-#define _LED_TG(port, pin)		do { HAL_GPIO_WritePin(port,	pin, !HAL_GPIO_ReadPin(port, pin)); } while (0)
+void _LED_ON(_U8 port, _U8 pin);
+void _LED_OF(_U8 port, _U8 pin);
+void _LED_TG(_U8 port, _U8 pin);
+
 
 /**< schedule interface */
 
@@ -85,57 +88,6 @@ _U32 _TIMER_CURRENT();
  */
 void _TIMER_SCHEDULE(void *func, _U32 delt);
 
-
-
-/**< LINUX INTERFACE ======================================================================================*/
-#elif PLATFORM_LINUX
-
-#include "time.h"
-#include "timer.h"
-#include "log.h"
-
-#define _PRINTF printf
-
-#define _LED_ON(port, pin)		do { printf("LED_ON: P%d_%d\n", port, pin);} while (0)
-#define _LED_OF(port, pin)		do { printf("LED_OF: P%d_%d\n", port, pin);} while (0)
-#define _LED_TG(port, pin)		do { printf("LED_TG: P%d_%d\n", prot, pin);} while (0)
-
-/**< schedule interface */
-
-/** _TIMER_CURRENT
- *  
- * 获取当前系统时钟,单位ms
- * 
- * @param none
- * 
- * @return none
- * 
- * @warning none
- * 
- * @note none
- *
- * @see none
- */
-_U32 _TIMER_CURRENT();
-
-/** _TIMER_SCHEDULE 
- * 
- * 开启调度, delt Ms 后回调 func
- * 
- * @param[in] func 回调函数
- * @param[in] delt 回调时间, 单位ms
- * 
- * @return none
- * 
- * @warning none
- * 
- * @note none
- *
- * @see none
- */
-void _TIMER_SCHEDULE(void *func, _U32 delt);
-
-#endif
 
 
 #ifdef __cplusplus

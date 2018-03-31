@@ -13,7 +13,7 @@
 #include "udp.h"
 
 #include "schedule.h"
-#include "led.h"
+#include "ledx.h"
 
 
 static stTestEnv_t ee;
@@ -48,8 +48,11 @@ int		test_init(void *_th, void *_fet, int port) {
 
 	ledInit(leds,sizeof(leds)/sizeof(leds[0]));
 
+	log_debug("11111");
 	ledBlink(0, 100, 100, 200);
+	log_debug("11111");
 	ledBlink(1, 100, 200, 100);
+	log_debug("11111");
 
 	return 0;
 }

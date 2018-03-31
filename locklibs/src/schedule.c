@@ -85,7 +85,7 @@ static void schedule_execute() {
 		return;
 	}
 
-	_TIMER_SCHEDULE(schedule_execute, delt);
+	_TIMER_SCHEDULE((void*)schedule_execute, delt);
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -54,7 +54,7 @@ srcs				+= $(ROOTDIR)/libs/third/libhttpd/src/ember.c
 srcs				+= $(ROOTDIR)/libs/third/libhttpd/src/protocol.c
 
 
-srcs				+= $(ROOTDIR)/locklibs/src/led.c
+srcs				+= $(ROOTDIR)/locklibs/src/ledx.c
 srcs				+= $(ROOTDIR)/locklibs/src/schedule.c
 srcs				+= $(ROOTDIR)/locklibs/src/platform.c
 
