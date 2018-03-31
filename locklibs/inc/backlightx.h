@@ -7,8 +7,8 @@
  *	@sinc			-
  *
  */
-#ifndef __TOUCHX_H_
-#define __TOUCHX_H_
+#ifndef __BACKLIGHTX_H_
+#define __BACKLIGHTX_H_
 
 #include "platform.h"
 #include "schedule.h"

@@ -40,9 +40,17 @@
 
 
 
+
 #define _PRINTF
 
 /**< gpio controller interface */
+#if PLATFORM_STM32
+#define _GPIO_MODE_OUT_PP       ((_U32)0x00000001U)
+#define _GPIO_NOPULL            ((_U32)0x00000000U)
+#define _GPIO_SPEED_LOW         ((_U32)0x00000000U)
+#define _GPIO_MODE_ANALOG       ((_U32)0x00000003U)
+#elif PLATFORM_LINUX
+#endif
 void _GPIO_CONFIG(_U8 port, _U8 pin, _U8 mode, _U8 pull, _U8 speed);
 void _GPIO_HIGH(_U8 port, _U8 pin);
 void _GPIO_LOW(_U8 port, _U8 pin);
